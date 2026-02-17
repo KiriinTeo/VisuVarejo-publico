@@ -4,10 +4,12 @@ import io.github.kiriinteo.visuvarejo.core.analytics.SalesMetrics;
 import io.github.kiriinteo.visuvarejo.core.domain.Money;
 import io.github.kiriinteo.visuvarejo.core.domain.Sale;
 import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Service
 public class GetSalesMetricsUseCase {
 
     private final SaleRepository saleRepository;

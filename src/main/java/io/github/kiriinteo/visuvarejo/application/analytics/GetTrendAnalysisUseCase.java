@@ -4,10 +4,12 @@ import io.github.kiriinteo.visuvarejo.core.analytics.TrendAnalyzer;
 import io.github.kiriinteo.visuvarejo.core.domain.Period;
 import io.github.kiriinteo.visuvarejo.core.domain.Sale;
 import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class GetTrendAnalysisUseCase {
 
     private final SaleRepository saleRepository;

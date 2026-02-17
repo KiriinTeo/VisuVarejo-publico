@@ -3,10 +3,12 @@ package io.github.kiriinteo.visuvarejo.application.catalog;
 import io.github.kiriinteo.visuvarejo.core.domain.Money;
 import io.github.kiriinteo.visuvarejo.core.domain.Product;
 import io.github.kiriinteo.visuvarejo.core.port.ProductRepository;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@Service
 public class CreateProductUseCase {
 
     private final ProductRepository productRepository;

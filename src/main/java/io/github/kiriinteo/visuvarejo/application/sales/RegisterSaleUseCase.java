@@ -3,10 +3,12 @@ package io.github.kiriinteo.visuvarejo.application.sales;
 import io.github.kiriinteo.visuvarejo.core.domain.*;
 import io.github.kiriinteo.visuvarejo.core.port.ProductRepository;
 import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class RegisterSaleUseCase {
 
     private final ProductRepository productRepository;
