@@ -45,4 +45,29 @@ public class ProductRepositoryImpl implements ProductRepository {
     public void deleteById(UUID id) {
         jpaRepository.deleteById(id);
     }
+
+    @Override
+    public Product update(Product product) {
+        ProductEntity entity = ProductMapper.toEntity(product);
+        ProductEntity updated = jpaRepository.save(entity);
+        return ProductMapper.toDomain(updated);
+    }
+
+    @Override
+    public Product activate(UUID id) {
+        ProductEntity entity = jpaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        entity.setActive(true);
+        ProductEntity updated = jpaRepository.save(entity);
+        return ProductMapper.toDomain(updated);
+    }
+
+    @Override
+    public Product deactivate(UUID id) {
+        ProductEntity entity = jpaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        entity.setActive(false);
+        ProductEntity updated = jpaRepository.save(entity);
+        return ProductMapper.toDomain(updated);
+    }
 }

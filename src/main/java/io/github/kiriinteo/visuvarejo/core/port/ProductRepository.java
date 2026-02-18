@@ -15,4 +15,10 @@ public interface ProductRepository {
     List<Product> findAll();
 
     void deleteById(UUID id);
+
+    Product update(Product product);
+
+    Product activate(UUID id);
+
+    Product deactivate(UUID id);
 }

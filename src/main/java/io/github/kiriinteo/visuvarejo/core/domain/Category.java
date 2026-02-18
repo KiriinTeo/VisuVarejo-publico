@@ -9,7 +9,7 @@ public class Category {
 
     public Category(UUID id, String name) {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Category name cannot be empty");
+            throw new IllegalArgumentException("Nome de Categoria não pode ser vazio");
         }
 
         this.id = id;

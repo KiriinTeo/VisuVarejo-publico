@@ -3,28 +3,19 @@ package io.github.kiriinteo.visuvarejo.application.catalog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import io.github.kiriinteo.visuvarejo.core.domain.Category;
 import io.github.kiriinteo.visuvarejo.core.port.CategoryRepository;
 import io.github.kiriinteo.visuvarejo.adapter.web.catalog.dto.CreateCategoryRequest;
-import io.github.kiriinteo.visuvarejo.adapter.web.catalog.dto.CategoryResponse;
-
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class CreateCategoryUseCase {
+public class GetAllCategoriesUseCase {
 
     private final CategoryRepository categoryRepository;
 
-    public CategoryResponse execute(CreateCategoryRequest request) {
-
-        Category category = new Category(UUID.randomUUID(),request.name());
-
-        categoryRepository.save(category);
-
-        return new CategoryResponse(
-                category.getId(),
-                category.getName()
-        );
+    public List<Category> execute() {
+        return categoryRepository.findAll();
     }
 }

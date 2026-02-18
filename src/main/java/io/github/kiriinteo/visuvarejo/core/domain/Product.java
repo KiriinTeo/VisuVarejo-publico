@@ -11,11 +11,11 @@ public class Product {
 
     public Product(UUID id, String name, Money price) {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Product name cannot be empty");
+            throw new IllegalArgumentException("Nome de produto não pode ser vazio");
         }
 
         if (price == null || !price.isGreaterThanZero()) {
-            throw new IllegalArgumentException("Product price must be greater than zero");
+            throw new IllegalArgumentException("Preço do produto deve ser maior que zero");
         }
 
         this.id = id;
@@ -40,6 +40,10 @@ public class Product {
         return active;
     }
 
+    public void activate() {
+        this.active = true;
+    }
+
     public void deactivate() {
         this.active = false;
     }
@@ -49,6 +53,13 @@ public class Product {
             throw new IllegalArgumentException("Product price must be greater than zero");
         }
         this.price = newPrice;
+    }
+
+    public void updateName(String newName) {
+        if (newName == null || newName.isBlank()) {
+            throw new IllegalArgumentException("Product name cannot be empty");
+        }
+        this.name = newName;
     }
 }
 
