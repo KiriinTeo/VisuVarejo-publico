@@ -2,6 +2,8 @@ package io.github.kiriinteo.visuvarejo.adapter.web.analytics;
 
 import io.github.kiriinteo.visuvarejo.application.analytics.GetAverageTicketUseCase;
 import io.github.kiriinteo.visuvarejo.application.analytics.GetRevenueByPeriodUseCase;
+import io.github.kiriinteo.visuvarejo.adapter.web.analytics.dto.RevenueResponse;
+import io.github.kiriinteo.visuvarejo.adapter.web.analytics.dto.TicketAverageResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,18 +25,20 @@ public class AnalyticsController {
     }
 
     @GetMapping("/revenue")
-    public BigDecimal getRevenue(
+    public RevenueResponse getRevenue(
             @RequestParam LocalDateTime start,
             @RequestParam LocalDateTime end
     ) {
-        return getRevenueByPeriodUseCase.execute(start, end);
+        BigDecimal totalRevenue = getRevenueByPeriodUseCase.execute(start, end);
+        return new RevenueResponse(start, end, totalRevenue);
     }
     
     @GetMapping("/ticket-average")
-    public BigDecimal getAverageTicket(
+    public TicketAverageResponse getAverageTicket(
             @RequestParam LocalDateTime start,
             @RequestParam LocalDateTime end
     ) {
-        return getAverageTicketUseCase.execute(start, end);
+        BigDecimal averageTicket = getAverageTicketUseCase.execute(start, end);
+        return new TicketAverageResponse(start, end, averageTicket);
     }
 }

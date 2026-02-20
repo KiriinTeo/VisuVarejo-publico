@@ -22,11 +22,11 @@ public class GetAverageTicketUseCase {
     public BigDecimal execute(LocalDateTime start, LocalDateTime end) {
 
         if (start == null || end == null) {
-            throw new IllegalArgumentException("Start and end dates are required");
+            throw new IllegalArgumentException("Datas de início e fim são obrigatórias");
         }
 
         if (end.isBefore(start)) {
-            throw new IllegalArgumentException("End date cannot be before start date");
+            throw new IllegalArgumentException("Data final não pode ser anterior à data inicial");
         }
         
         Period period = new Period(start.toLocalDate(), end.toLocalDate());
