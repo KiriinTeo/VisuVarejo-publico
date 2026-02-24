@@ -3,8 +3,9 @@ package io.github.kiriinteo.visuvarejo.application.analytics;
 import io.github.kiriinteo.visuvarejo.core.analytics.SalesMetrics;
 import io.github.kiriinteo.visuvarejo.core.domain.Money;
 import io.github.kiriinteo.visuvarejo.core.domain.Sale;
-import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
 import io.github.kiriinteo.visuvarejo.core.domain.Period;
+import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -31,6 +32,8 @@ public class GetSalesMetricsUseCase {
             totalItems += sale.getItems().size();
         }
 
-        return new SalesMetrics(totalRevenue, totalItems);
+        int salesCount = sales.size();
+
+        return new SalesMetrics(totalRevenue, totalItems, salesCount);
     }
 }

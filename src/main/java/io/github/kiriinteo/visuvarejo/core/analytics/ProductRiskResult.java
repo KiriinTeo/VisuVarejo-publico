@@ -1,24 +1,33 @@
 package io.github.kiriinteo.visuvarejo.core.analytics;
 
+import java.util.UUID;
+
 public class ProductRiskResult {
 
-    private final String productId;
+    private final UUID productId;
     private final double slope;
     private final double volatility;
     private final RiskLevel riskLevel;
+    private final String productName;
 
-    public ProductRiskResult(String productId,
+    public ProductRiskResult(UUID productId,
                              double slope,
                              double volatility,
-                             RiskLevel riskLevel) {
+                             RiskLevel riskLevel,
+                             String productName) {
         this.productId = productId;
         this.slope = slope;
         this.volatility = volatility;
         this.riskLevel = riskLevel;
+        this.productName = productName;
     }
 
-    public String getProductId() {
+    public UUID getProductId() {
         return productId;
+    }
+
+    public String getProductName() {
+        return productName;
     }
 
     public double getSlope() {

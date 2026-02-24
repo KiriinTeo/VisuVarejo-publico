@@ -47,4 +47,8 @@ public class SaleItem {
     public String getName() {
         return name;
     }
+
+    public Money getSubtotal() {
+        return unitPrice.multiply(quantity);
+    }
 }

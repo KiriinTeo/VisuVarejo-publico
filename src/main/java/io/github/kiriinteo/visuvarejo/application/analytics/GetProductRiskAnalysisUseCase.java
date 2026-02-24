@@ -38,7 +38,7 @@ public class GetProductRiskAnalysisUseCase {
 
         return productDailyTotals.entrySet()
                 .stream()
-                .map(e -> analyzer.analyze(e.getKey().toString(), e.getValue()))
+                .map(e -> analyzer.analyze(e.getKey(), e.getKey().toString(), e.getValue()))
                 .sorted(Comparator.comparing(ProductRiskResult::getSlope))
                 .collect(Collectors.toList());
     }

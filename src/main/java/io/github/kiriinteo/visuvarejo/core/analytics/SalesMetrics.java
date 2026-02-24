@@ -7,14 +7,16 @@ public class SalesMetrics {
     private final Money totalRevenue;
     private final int totalItemsSold;
     private final double averageTicket;
+    private final int salesCount;
 
-    public SalesMetrics(Money totalRevenue, int totalItemsSold) {
+    public SalesMetrics(Money totalRevenue, int totalItemsSold, int salesCount) {
         this.totalRevenue = totalRevenue;
         this.totalItemsSold = totalItemsSold;
+        this.salesCount = salesCount == 0 ? 0 : salesCount;
 
         this.averageTicket = totalItemsSold == 0
                 ? 0
-                : totalRevenue.getValue().doubleValue() / totalItemsSold;
+                : totalRevenue.getValue().doubleValue() / salesCount;
     }
 
     public Money getTotalRevenue() {
@@ -27,5 +29,9 @@ public class SalesMetrics {
 
     public double getAverageTicket() {
         return averageTicket;
+    }
+
+    public int getSalesCount() {
+        return salesCount;
     }
 }

@@ -1,17 +1,19 @@
 package io.github.kiriinteo.visuvarejo.core.analytics;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ProductRiskAnalyzer {
 
-    public ProductRiskResult analyze(String productId, List<Double> values) {
+    public ProductRiskResult analyze(UUID productId, String productName, List<Double> values) {
 
         if (values.size() < 2) {
             return new ProductRiskResult(
                 productId,
                 0.0,
                 0.0,
-                ProductRiskResult.RiskLevel.HEALTHY
+                ProductRiskResult.RiskLevel.HEALTHY,
+                productName
             );
         }
 
@@ -56,6 +58,6 @@ public class ProductRiskAnalyzer {
             level = ProductRiskResult.RiskLevel.HEALTHY;
         }
 
-        return new ProductRiskResult(productId, slope, volatility, level);
+        return new ProductRiskResult(productId,slope, volatility, level, productName);
     }
 }

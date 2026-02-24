@@ -42,7 +42,7 @@ public class GetGrowthScoreUseCase {
                 .stream()
                 .map(entry -> {
                     ProductRiskResult risk =
-                            riskAnalyzer.analyze(entry.getKey(), entry.getValue());
+                            riskAnalyzer.analyze(UUID.fromString(entry.getKey()), entry.getKey(), entry.getValue());
 
                     return scoreEngine.calculate(
                             entry.getKey(),

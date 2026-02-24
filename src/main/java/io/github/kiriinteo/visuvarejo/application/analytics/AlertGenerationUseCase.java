@@ -40,17 +40,47 @@ public class AlertGenerationUseCase {
 
         for (ProductRiskResult risk : risks) {
 
-            if ("CRITICAL".equals(risk.getRiskLevel())) {
+            if (risk.getRiskLevel() == ProductRiskResult.RiskLevel.HIGH_RISK) {
                 alerts.add(new Alert(
                         AlertType.HIGH_RISK_PRODUCT,
-                        "Produto " + risk.getProductId() + " está com risco CRITICO de queda nas vendas"
+                        String.format("Produto %s apresenta alto risco de queda vertiginosa nas vendas",
+                                risk.getProductName()),
+                        "HIGH",
+                        risk.getProductId(),
+                        risk.getProductName()
                 ));
             }
 
-            if (risk.getSlope() < 0) {
+            if (risk.getRiskLevel() == ProductRiskResult.RiskLevel.MEDIUM_RISK) {
                 alerts.add(new Alert(
-                        AlertType.DECLINING_PRODUCT,
-                        "Produto " + risk.getProductId() + " está em declínio nas vendas"
+                        AlertType.MEDIUM_RISK_PRODUCT,
+                        String.format("Produto %s apresenta declínio consistente nas vendas",
+                                risk.getProductName()),
+                        "MEDIUM",
+                        risk.getProductId(),
+                        risk.getProductName()
+                ));
+            }
+
+            if (risk.getRiskLevel() == ProductRiskResult.RiskLevel.LOW_RISK) {
+                alerts.add(new Alert(
+                        AlertType.LOW_RISK_PRODUCT,
+                        String.format("Produto %s apresenta baixo risco de baixa performance, mas deve ser monitorado",
+                                risk.getProductName()),
+                        "LOW",
+                        risk.getProductId(),
+                        risk.getProductName()
+                ));
+            }
+
+            if (risk.getRiskLevel() == ProductRiskResult.RiskLevel.HEALTHY) {
+                alerts.add(new Alert(
+                        AlertType.STABLE_PRODUCT,
+                        String.format("Produto %s apresenta risco mínimo de baixa performance",
+                                risk.getProductName()),
+                        "NONE",
+                        risk.getProductId(),
+                        risk.getProductName()
                 ));
             }
         }
@@ -65,14 +95,20 @@ public class AlertGenerationUseCase {
         if (trend < -15) {
             alerts.add(new Alert(
                     AlertType.GLOBAL_DECLINE,
-                    "Vendas caíram mais de 15% comparado ao período anterior"
+                    String.format("Vendas caíram mais de 15% comparado ao período anterior"),
+                    "HIGH",
+                    null,
+                    null     
             ));
         }
 
         if (trend > 40) {
             alerts.add(new Alert(
                     AlertType.ANOMALOUS_GROWTH,
-                    "Vendas aumentaram mais de 40% comparado ao período anterior"
+                    "Vendas aumentaram mais de 40% comparado ao período anterior",
+                    "POSITIVE",
+                    null,
+                    null
             ));
         }
 
