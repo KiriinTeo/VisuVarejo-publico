@@ -78,4 +78,12 @@ public class ProductRepositoryImpl implements ProductRepository {
                 .map(ProductMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Product> findByCompanyId(UUID companyId) {
+        return jpaRepository.findByCompanyId(companyId)
+                .stream()
+                .map(ProductMapper::toDomain)
+                .collect(Collectors.toList());
+    }
 }

@@ -23,4 +23,6 @@ public interface ProductRepository {
     Product deactivate(UUID id);
 
     List<Product> findByCategoryId(UUID categoryId);
+
+    List<Product> findByCompanyId(UUID companyId);
 }

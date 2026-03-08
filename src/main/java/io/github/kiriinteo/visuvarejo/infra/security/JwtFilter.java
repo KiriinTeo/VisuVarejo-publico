@@ -1,5 +1,7 @@
 package io.github.kiriinteo.visuvarejo.infra.security;
 
+import io.github.kiriinteo.visuvarejo.infra.security.AuthenticatedUser;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -39,13 +42,18 @@ public class JwtFilter extends OncePerRequestFilter {
             if (tokenProvider.validateToken(token)) {
 
                 String email = tokenProvider.getEmailFromToken(token);
+                String companyId = tokenProvider.getCompanyId(token);
+                String role = tokenProvider.getRole(token);
 
                 UserDetails userDetails =
                         userDetailsService.loadUserByUsername(email);
 
+                AuthenticatedUser principal =
+                        new AuthenticatedUser(email, UUID.fromString(companyId), role);
+
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
-                                userDetails,
+                                principal,
                                 null,
                                 userDetails.getAuthorities()
                         );

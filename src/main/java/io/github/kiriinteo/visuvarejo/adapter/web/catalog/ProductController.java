@@ -28,7 +28,6 @@ public class ProductController {
     private final UpdateProductUseCase updateProductUseCase;
     private final ProductRepository productRepository;
 
-
     public ProductController(CreateProductUseCase createProductUseCase, GetAllProductsUseCase getAllProductsUseCase, GetProductByIdUseCase getProductByIdUseCase, UpdateProductUseCase updateProductUseCase, ProductRepository productRepository) {
         this.createProductUseCase = createProductUseCase;
         this.getAllProductsUseCase = getAllProductsUseCase;
@@ -51,7 +50,8 @@ public class ProductController {
                 product.getName(),
                 product.getPrice().getValue(),
                 product.getCategoryId(),
-                product.isActive()
+                product.isActive(),
+                product.getCompanyId()
         );
     }
 

@@ -10,7 +10,8 @@ public record ProductResponse(
         String name,
         BigDecimal price,
         UUID categoryId,
-        boolean active
+        boolean active,
+        UUID companyId
 ) {
    public static ProductResponse fromDomain(Product product) {
         return new ProductResponse(
@@ -18,7 +19,8 @@ public record ProductResponse(
                 product.getName(),
                 product.getPrice().getValue(),
                 product.getCategoryId(),
-                product.isActive()
+                product.isActive(),
+                product.getCompanyId()
         );
     }
 }

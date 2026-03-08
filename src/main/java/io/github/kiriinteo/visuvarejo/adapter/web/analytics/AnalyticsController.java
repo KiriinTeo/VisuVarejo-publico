@@ -17,7 +17,6 @@ import io.github.kiriinteo.visuvarejo.adapter.web.analytics.dto.TicketAverageRes
 import io.github.kiriinteo.visuvarejo.adapter.web.analytics.dto.DashboardResponse;
 import io.github.kiriinteo.visuvarejo.adapter.web.analytics.dto.GrowthScoreResponse;
 import io.github.kiriinteo.visuvarejo.adapter.web.analytics.dto.OverviewResponse;
-import io.github.kiriinteo.visuvarejo.adapter.web.analytics.dto.DashboardResponse;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

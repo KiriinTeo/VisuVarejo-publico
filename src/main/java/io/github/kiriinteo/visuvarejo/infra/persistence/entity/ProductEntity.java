@@ -20,14 +20,18 @@ public class ProductEntity {
     @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
 
+    @Column(nullable = false)
+    private UUID companyId;
+
     public ProductEntity() {}
 
-    public ProductEntity(UUID id, String name, double price, boolean active, CategoryEntity category) {
+    public ProductEntity(UUID id, String name, double price, boolean active, CategoryEntity category, UUID companyId) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.active = active;
         this.category = category;
+        this.companyId = companyId;
     }
 
     public UUID getId() { return id; }
@@ -44,4 +48,7 @@ public class ProductEntity {
 
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
+
+    public UUID getCompanyId() { return companyId; }
+    public void setCompanyId(UUID companyId) { this.companyId = companyId; }
 }

@@ -25,7 +25,8 @@ public class GetAllProductsUseCase {
                         product.getName(),
                         product.getPrice().getValue(),
                         product.getCategoryId(),
-                        product.isActive()
+                        product.isActive(),
+                        product.getCompanyId()
                 ))
                 .toList();
     }

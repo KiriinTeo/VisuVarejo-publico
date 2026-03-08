@@ -9,8 +9,9 @@ public class Product {
     private Money price;
     private boolean active;
     private UUID categoryId;
+    private UUID companyId;
 
-    public Product(UUID id, String name, Money price, UUID categoryId) {
+    public Product(UUID id, String name, Money price, UUID categoryId, UUID companyId) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Nome de produto não pode ser vazio");
         }
@@ -28,6 +29,7 @@ public class Product {
         this.price = price;
         this.active = true;
         this.categoryId = categoryId;
+        this.companyId = companyId;
     }
 
     public UUID getId() {
@@ -70,6 +72,10 @@ public class Product {
             throw new IllegalArgumentException("Product name cannot be empty");
         }
         this.name = newName;
+    }
+
+    public UUID getCompanyId() {
+        return companyId;
     }
 }
 
