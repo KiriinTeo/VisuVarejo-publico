@@ -16,4 +16,6 @@ public interface SaleRepository {
     List<Sale> findByPeriod(Period period);
 
     List<Sale> findAll();
+
+    List<Sale> findByCompanyId(UUID companyId);
 }

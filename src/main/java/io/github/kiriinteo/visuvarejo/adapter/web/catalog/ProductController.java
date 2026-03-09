@@ -57,12 +57,31 @@ public class ProductController {
 
     @GetMapping
     public List<ProductResponse> findAll() {
-        return getAllProductsUseCase.execute();
+        return getAllProductsUseCase.execute()
+                .stream()
+                .map(product -> new ProductResponse(
+                        product.getId(),
+                        product.getName(),
+                        product.getPrice().getValue(),
+                        product.getCategoryId(),
+                        product.isActive(),
+                        product.getCompanyId()
+                ))
+                .toList();
     }
 
     @GetMapping("/{id}")
     public ProductResponse findById(@PathVariable UUID id) {
-        return getProductByIdUseCase.execute(id);
+        Product product = getProductByIdUseCase.execute(id);
+
+        return new ProductResponse(
+                product.getId(),
+                product.getName(),
+                product.getPrice().getValue(),
+                product.getCategoryId(),
+                product.isActive(),
+                product.getCompanyId()
+        );
     }
 
     @PutMapping("/{id}")

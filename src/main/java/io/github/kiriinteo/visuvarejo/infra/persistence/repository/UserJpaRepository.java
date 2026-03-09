@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserJpaRepository extends JpaRepository<UserEntity, UUID> {
-
     @Query("""
         SELECT u FROM UserEntity u
         JOIN FETCH u.company

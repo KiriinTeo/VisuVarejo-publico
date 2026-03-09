@@ -11,18 +11,26 @@ import io.github.kiriinteo.visuvarejo.core.port.ProductRepository;
 import io.github.kiriinteo.visuvarejo.core.exception.DomainException;
 import io.github.kiriinteo.visuvarejo.adapter.web.catalog.dto.ProductResponse;
 import io.github.kiriinteo.visuvarejo.adapter.web.catalog.dto.UpdateProductRequest;
+import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
 
 @Service
 @RequiredArgsConstructor
 public class UpdateProductUseCase {
 
     private final ProductRepository productRepository;
+    private final CurrentUserProvider currentUserProvider;
 
     public ProductResponse execute(UUID id, UpdateProductRequest request) {
+
+        UUID companyId = currentUserProvider.getCompanyId();
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new DomainException("Produto não encontrado"));
 
+        if (!product.getCompanyId().equals(companyId)) {
+            throw new DomainException("Produto não encontrado");
+        }
+        
         if (request.name() != null) {
             product.updateName(request.name());
         }

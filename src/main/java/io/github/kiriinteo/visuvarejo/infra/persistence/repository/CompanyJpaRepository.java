@@ -7,6 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface CompanyJpaRepository extends JpaRepository<CompanyEntity, UUID> {
-
     Optional<CompanyEntity> findByDocument(String document);
 }

@@ -77,5 +77,6 @@ public class Product {
     public UUID getCompanyId() {
         return companyId;
     }
+
 }
 

@@ -9,7 +9,8 @@ public class SaleMapper {
 
         SaleEntity saleEntity = new SaleEntity(
                 sale.getId(),
-                sale.getDate()
+                sale.getDate(),
+                sale.getCompanyId()
         );
 
         sale.getItems().forEach(item -> {
@@ -19,7 +20,8 @@ public class SaleMapper {
                 item.getProductId(),
                 item.getQuantity(),
                 item.getUnitPrice().getValue(),
-                item.getName()
+                item.getName(),
+                item.getCompanyId()
             );
 
             saleEntity.getItems().add(itemEntity);
@@ -30,7 +32,7 @@ public class SaleMapper {
 
     public static Sale toDomain(SaleEntity entity) {
 
-        Sale sale = new Sale(entity.getId());
+        Sale sale = new Sale(entity.getId(), entity.getCompanyId());
 
         entity.getItems().forEach(itemEntity -> {
 
@@ -38,7 +40,8 @@ public class SaleMapper {
                 itemEntity.getProductId(),
                 itemEntity.getQuantity(),
                 new Money(itemEntity.getUnitPrice()),
-                itemEntity.getName()
+                itemEntity.getName(),
+                itemEntity.getCompanyId()
             );
 
             sale.addItem(item);

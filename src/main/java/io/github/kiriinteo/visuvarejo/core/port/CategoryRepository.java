@@ -18,4 +18,6 @@ public interface CategoryRepository {
 
     boolean existsById(UUID categoryId);
 
+    List<Category> findByCompanyId(UUID companyId);
+
 }

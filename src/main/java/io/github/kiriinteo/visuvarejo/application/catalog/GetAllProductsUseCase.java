@@ -3,31 +3,23 @@ package io.github.kiriinteo.visuvarejo.application.catalog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import io.github.kiriinteo.visuvarejo.core.domain.Product;
 import io.github.kiriinteo.visuvarejo.core.port.ProductRepository;
-import io.github.kiriinteo.visuvarejo.adapter.web.catalog.dto.ProductResponse;
+import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class GetAllProductsUseCase {
 
     private final ProductRepository productRepository;
+    private final CurrentUserProvider currentUserProvider;
 
-    public List<ProductResponse> execute() {
+    public List<Product> execute() {
+        UUID companyId = currentUserProvider.getCompanyId();
 
-        List<Product> products = productRepository.findAll();
-
-        return products.stream()
-                .map(product -> new ProductResponse(
-                        product.getId(),
-                        product.getName(),
-                        product.getPrice().getValue(),
-                        product.getCategoryId(),
-                        product.isActive(),
-                        product.getCompanyId()
-                ))
-                .toList();
+        return productRepository.findByCompanyId(companyId);
     }
 }

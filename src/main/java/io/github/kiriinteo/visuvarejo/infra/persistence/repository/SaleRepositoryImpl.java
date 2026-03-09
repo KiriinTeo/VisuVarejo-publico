@@ -54,4 +54,12 @@ public class SaleRepositoryImpl implements SaleRepository {
                 .map(SaleMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Sale> findByCompanyId(UUID companyId) { 
+        return jpaRepository.findByCompanyId(companyId)
+                .stream()
+                .map(SaleMapper::toDomain)
+                .collect(Collectors.toList());
+    }
 }

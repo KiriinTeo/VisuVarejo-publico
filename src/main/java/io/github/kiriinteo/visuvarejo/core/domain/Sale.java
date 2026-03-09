@@ -10,9 +10,11 @@ public class Sale {
     private final UUID id;
     private final LocalDateTime date;
     private final List<SaleItem> items = new ArrayList<>();
+    private UUID companyId;
 
-    public Sale(UUID id) {
+    public Sale(UUID id, UUID companyId) {
         this.id = id;
+        this.companyId = companyId;
         this.date = LocalDateTime.now();
     }
 
@@ -44,5 +46,9 @@ public class Sale {
 
     public Money getTotalAmount() {
         return calculateTotal();
+    }
+
+    public UUID getCompanyId() {
+        return companyId;
     }
 }

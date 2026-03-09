@@ -3,19 +3,20 @@ package io.github.kiriinteo.visuvarejo.application.sales;
 import io.github.kiriinteo.visuvarejo.core.domain.Period;
 import io.github.kiriinteo.visuvarejo.core.domain.Sale;
 import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
+import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class GetSalesByPeriodUseCase {
 
     private final SaleRepository saleRepository;
-
-    public GetSalesByPeriodUseCase(SaleRepository saleRepository) {
-        this.saleRepository = saleRepository;
-    }
+    private final CurrentUserProvider currentUserProvider;
 
     public List<Sale> execute(LocalDateTime start, LocalDateTime end) {
 

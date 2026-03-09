@@ -20,6 +20,9 @@ public class SaleItemEntity {
     @Column(name = "product_id", nullable = false)
     private UUID productId;
 
+    @Column(nullable = false)
+    private UUID companyId;
+
     private int quantity;
     private BigDecimal unitPrice;
 
@@ -28,12 +31,13 @@ public class SaleItemEntity {
 
     protected SaleItemEntity() {}
 
-    public SaleItemEntity(SaleEntity sale, UUID productId, int quantity, BigDecimal unitPrice, String name) {
+    public SaleItemEntity(SaleEntity sale, UUID productId, int quantity, BigDecimal unitPrice, String name, UUID companyId) {
         this.sale = sale;
         this.productId = productId;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
         this.name = name;
+        this.companyId = companyId;
     }
 
     public UUID getId() { return id; }
@@ -42,5 +46,6 @@ public class SaleItemEntity {
     public BigDecimal getUnitPrice() { return unitPrice; }
     public String getName() { return name; }
     public int getQuantity() { return quantity; }
+    public UUID getCompanyId() { return companyId; }
     
 }
