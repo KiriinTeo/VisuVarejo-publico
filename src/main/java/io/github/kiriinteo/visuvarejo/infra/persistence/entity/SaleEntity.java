@@ -23,9 +23,10 @@ public class SaleEntity {
 
     protected SaleEntity() {}
 
-    public SaleEntity(UUID id, LocalDateTime date) {
+    public SaleEntity(UUID id, LocalDateTime date, UUID companyId) {
         this.id = id;
         this.date = date;
+        this.companyId = companyId;
     }
 
     public UUID getId() { return id; }

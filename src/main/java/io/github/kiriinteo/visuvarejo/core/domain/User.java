@@ -56,4 +56,5 @@ public class User {
     public Company getCompany() {
         return company;
     }
+    
 }
