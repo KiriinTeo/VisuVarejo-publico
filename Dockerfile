@@ -1,4 +1,3 @@
-# ── Estágio 1: build ──────────────────────────────────────────────────────
 # Usamos a imagem Maven oficial para compilar o projeto sem precisar
 # ter Maven instalado na máquina host.
 FROM maven:3.9-eclipse-temurin-17 AS build

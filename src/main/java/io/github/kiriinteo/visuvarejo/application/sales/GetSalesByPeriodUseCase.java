@@ -16,7 +16,7 @@ import java.util.List;
 public class GetSalesByPeriodUseCase {
 
     private final SaleRepository saleRepository;
-    private final CurrentUserProvider currentUserProvider;
+    //private final CurrentUserProvider currentUserProvider;
 
     public List<Sale> execute(LocalDateTime start, LocalDateTime end) {
 

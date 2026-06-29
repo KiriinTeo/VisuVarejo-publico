@@ -2,14 +2,13 @@ version: '3.9'
 
 services:
 
-  # ── Banco de dados ────────────────────────────────────────────────────────
   postgres:
     image: postgres:16-alpine
     container_name: visuvarejo-db
     environment:
       POSTGRES_DB: visuvarejo
       POSTGRES_USER: visuvarejo
-      POSTGRES_PASSWORD: visuvarejo_pass
+      POSTGRES_PASSWORD: segredo
     ports:
       - "5432:5432"
     volumes:
@@ -20,8 +19,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # ── Cache (Redis) ─────────────────────────────────────────────────────────
-  # Já incluído aqui para não precisar reconfigurar depois na Fase 2.
   redis:
     image: redis:7-alpine
     container_name: visuvarejo-redis
@@ -33,7 +30,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # ── Aplicação Spring Boot ─────────────────────────────────────────────────
   app:
     build:
       context: .
@@ -42,15 +38,15 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_PROFILES_ACTIVE: docker
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: visuvarejo
-      DB_USER: visuvarejo
-      DB_PASS: visuvarejo_pass
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      JWT_SECRET: ${JWT_SECRET:-visuvarejo-secret-key-mude-em-producao-use-256bits}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-docker}
+      DB_HOST: ${DB_HOST:-postgres}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-visuvarejo}
+      DB_USER: ${DB_USER:-visuvarejo}
+      DB_PASS: ${DB_PASS:-segredo}
+      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      JWT_SECRET: ${JWT_SECRET:-tambemSegredo}
     depends_on:
       postgres:
         condition: service_healthy
