@@ -11,12 +11,11 @@ RUN mvn dependency:go-offline -q
 COPY src ./src
 RUN mvn clean package -DskipTests -q
 
-# JRE 17 alpine é ~100MB vs ~400MB da imagem JDK completa.
 FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
-# Usuário não-root por segurança (boa prática em SaaS)
+# Usuário não-root por segurança
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring
 
