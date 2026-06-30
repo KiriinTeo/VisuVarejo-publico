@@ -20,4 +20,7 @@ public interface CategoryRepository {
 
     List<Category> findByCompanyId(UUID companyId);
 
+    List<Category> findAllByTenantId(String tenantId);
+
+    Optional<Category> findByIdAndTenantId(UUID id, String tenantId);
 }

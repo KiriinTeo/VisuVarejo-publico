@@ -59,4 +59,18 @@ public class CategoryRepositoryImpl implements CategoryRepository {
                 .collect(Collectors.toList());
     }
     
+    @Override
+    public List<Category> findAllByTenantId(String tenantId) {
+        return jpaRepository.findAllByTenantId(tenantId)
+                .stream()
+                .map(CategoryMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+    
+    @Override
+    public Optional<Category> findByIdAndTenantId(UUID id, String tenantId) {       
+        return jpaRepository.findById(id)
+                .filter(categoryEntity -> categoryEntity.getTenantId().equals(tenantId))
+                .map(CategoryMapper::toDomain);
+    }
 }

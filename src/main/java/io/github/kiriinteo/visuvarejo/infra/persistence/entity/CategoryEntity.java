@@ -13,6 +13,9 @@ public class CategoryEntity {
     @Column(nullable = false)
     private UUID companyId;
 
+    @Column(name = "tenantId", nullable = false)
+    private String tenantId;
+
     private String name;
 
     public CategoryEntity() {}
@@ -30,4 +33,6 @@ public class CategoryEntity {
     public void setCompanyId(UUID companyId) { this.companyId = companyId; }
 
     public String getName() { return name; }
+
+    public String getTenantId() { return tenantId; }
 }

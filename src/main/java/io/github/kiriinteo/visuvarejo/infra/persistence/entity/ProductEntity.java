@@ -23,6 +23,9 @@ public class ProductEntity {
     @Column(nullable = false)
     private UUID companyId;
 
+    @Column(name = "tenantId", nullable = false)
+    private String tenantId;
+
     public ProductEntity() {}
 
     public ProductEntity(UUID id, String name, double price, boolean active, CategoryEntity category, UUID companyId) {
@@ -51,4 +54,6 @@ public class ProductEntity {
 
     public UUID getCompanyId() { return companyId; }
     public void setCompanyId(UUID companyId) { this.companyId = companyId; }
+
+    public String getTenantId() { return tenantId; }
 }

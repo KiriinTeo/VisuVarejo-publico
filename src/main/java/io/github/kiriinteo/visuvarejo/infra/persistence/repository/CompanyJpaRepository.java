@@ -10,5 +10,6 @@ import java.util.List;
 
 public interface CompanyJpaRepository extends JpaRepository<CompanyEntity, UUID> {
     Optional<CompanyEntity> findByDocument(String document);
+    
     List<Sale> findByTenantId(String tenantId);
 }

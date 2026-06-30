@@ -9,4 +9,6 @@ import java.util.UUID;
 
 public interface CategoryJpaRepository extends JpaRepository<CategoryEntity, UUID> {
     List<CategoryEntity> findByCompanyId(UUID companyId);
+
+    List<CategoryEntity> findAllByTenantId(String tenantId);
 }

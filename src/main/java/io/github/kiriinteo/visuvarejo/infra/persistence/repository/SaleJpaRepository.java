@@ -9,5 +9,8 @@ import java.util.UUID;
 
 public interface SaleJpaRepository extends JpaRepository<SaleEntity, UUID> {
     List<SaleEntity> findByCompanyId(UUID companyId);
+
     List<SaleEntity> findByDateBetween(LocalDateTime start, LocalDateTime end);
+
+    List<SaleEntity> findByTenantIdAndSaleDateBetween(String tenantId, LocalDateTime start, LocalDateTime end);
 }

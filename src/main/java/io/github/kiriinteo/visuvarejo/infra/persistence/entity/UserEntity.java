@@ -22,6 +22,9 @@ public class UserEntity {
     @Column(nullable = false)
     private String role;
 
+    @Column(name = "tenantId", nullable = false)
+    private String tenantId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", nullable = false)
     private CompanyEntity company;
@@ -48,4 +51,5 @@ public class UserEntity {
     public String getPassword() { return password; }
     public String getRole() { return role; }
     public CompanyEntity getCompany() { return company; }
+    public String getTenantId() { return tenantId; }
 }

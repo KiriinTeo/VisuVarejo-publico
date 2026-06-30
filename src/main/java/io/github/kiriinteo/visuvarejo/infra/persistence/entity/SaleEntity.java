@@ -16,6 +16,9 @@ public class SaleEntity {
     @Column(nullable = false)
     private UUID companyId;
 
+    @Column(name = "tenantId", nullable = false)
+    private String tenantId;
+
     private LocalDateTime date;
 
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -37,4 +40,6 @@ public class SaleEntity {
 
     public LocalDateTime getDate() { return date; }
     public List<SaleItemEntity> getItems() { return items; }
+
+    public String getTenantId() { return tenantId; }
 }

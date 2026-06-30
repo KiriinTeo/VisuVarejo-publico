@@ -19,6 +19,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
  * O interceptor roda após o filtro de segurança do Spring Security,
  * então o JWT já foi validado quando chegamos aqui. Mais seguro.
  */
+
 @Component
 @RequiredArgsConstructor
 public class TenantInterceptor implements HandlerInterceptor {

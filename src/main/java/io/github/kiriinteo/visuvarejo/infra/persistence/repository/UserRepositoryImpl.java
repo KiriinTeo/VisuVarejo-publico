@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -34,6 +36,21 @@ public class UserRepositoryImpl implements UserRepository {
     public Optional<User> findByEmail(String email) {
         return jpaRepository.findByEmail(email)
                 .map(UserMapper::toDomain);
+    }
+
+    @Override   
+    public Optional<User> findByEmailAndTenantId(String email, String tenantId) {
+        return jpaRepository.findByEmailAndTenantId(email, tenantId)
+                .map(UserMapper::toDomain);
+    }
+
+    @Override
+    public List<User> findAllByTenantId(String tenantId) {
+        return jpaRepository.findAll()
+                .stream()
+                .filter(userEntity -> tenantId.equals(userEntity.getTenantId()))
+                .map(UserMapper::toDomain)
+                .collect(Collectors.toList());
     }
     
 }

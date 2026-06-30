@@ -86,4 +86,30 @@ public class ProductRepositoryImpl implements ProductRepository {
                 .map(ProductMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Product> findAllByTenantId(String tenantId) {   
+        return jpaRepository.findAll()
+                .stream()
+                .filter(productEntity -> productEntity.getTenantId().equals(tenantId))
+                .map(ProductMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Product> findByCategoryIdAndTenantId(UUID categoryId, String tenantId) {
+        return jpaRepository.findByCategoryId(categoryId)
+                .stream()
+                .filter(productEntity -> productEntity.getTenantId().equals(tenantId))
+                .map(ProductMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Product> findByIdAndTenantId(UUID id, String tenantId) {
+        return jpaRepository.findById(id)
+                .filter(productEntity -> productEntity.getTenantId().equals(tenantId))
+                .map(ProductMapper::toDomain);
+    }
 }
+

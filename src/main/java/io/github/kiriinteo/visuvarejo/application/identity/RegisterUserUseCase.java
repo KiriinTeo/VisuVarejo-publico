@@ -43,7 +43,8 @@ public class RegisterUserUseCase {
                 command.email(),
                 passwordEncoder.encode(command.password()),
                 Role.ADMIN,
-                company
+                company,
+                company.getTenantId()
         );
 
         user = userRepository.save(user);
