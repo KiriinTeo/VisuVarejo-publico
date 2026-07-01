@@ -34,7 +34,7 @@ API projetada para consumo por aplicações Web (SPA), Mobile ou dashboards anal
 | ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white) | Framework Java que coordena endpoints, segurança, isolamento e afins (Boot, Security, Data JPA) |
 | ![Maven](https://img.shields.io/badge/apachemaven-C71A36.svg?style=for-the-badge&logo=apachemaven&logoColor=white) | Gerenciador de depêndencias, compilamento, ambiente e estrutura |
 | ![Hibernate](https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=Hibernate&logoColor=white) | ORM orquestrador de dados em conjunto do banco |
-| ![H2](https://img.shields.io/badge/H2%20Database-09476B.svg?style=for-the-badge&logo=H2-Database&logoColor=white) | Banco relacional local definindo a persistência de dados |
+| ![PostgreSQL](https://img.shields.io/badge/postgresql-4169e1?style=for-the-badge&logo=postgresql&logoColor=white) | Banco relacional local definindo a persistência de dados |
 | ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens) | Tokenização para multi-tenant, segurança e autenticação |
 | ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white) | Teste de endpoints e alinhamento destes |
 ---
