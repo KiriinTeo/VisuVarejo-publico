@@ -14,6 +14,8 @@ public class ProductMapper {
         entity.setId(product.getId());
         entity.setName(product.getName());
         entity.setPrice(product.getPrice().getValue().doubleValue());
+        entity.setActive(product.isActive());
+        entity.setCompanyId(product.getCompanyId());
 
         CategoryEntity category = new CategoryEntity();
         category.setId(product.getCategoryId());
@@ -28,7 +30,8 @@ public class ProductMapper {
             entity.getId(),
             entity.getName(),
             new Money(BigDecimal.valueOf(entity.getPrice())),
-            entity.getCategory().getId()
+            entity.getCategory().getId(),
+            entity.getCompanyId()
         );
     }
 }

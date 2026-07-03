@@ -18,4 +18,9 @@ public interface CategoryRepository {
 
     boolean existsById(UUID categoryId);
 
+    List<Category> findByCompanyId(UUID companyId);
+
+    List<Category> findAllByCompanyId(UUID companyId);
+
+    Optional<Category> findByIdAndCompanyId(UUID id, UUID companyId);
 }

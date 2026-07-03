@@ -30,7 +30,8 @@ public class CategoryController {
         return categoryRepository.findAll().stream()
                 .map(category -> new CategoryResponse(
                         category.getId(),
-                        category.getName()
+                        category.getName(),
+                        category.getCompanyId()
                 ))
                 .toList();
     }
@@ -43,7 +44,8 @@ public class CategoryController {
 
         return new CategoryResponse(
                 category.getId(),
-                category.getName()
+                category.getName(),
+                category.getCompanyId()
         );
     }
 

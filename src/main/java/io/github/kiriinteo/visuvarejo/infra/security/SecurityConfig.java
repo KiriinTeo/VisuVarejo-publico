@@ -1,11 +1,11 @@
 package io.github.kiriinteo.visuvarejo.infra.security;
 
-import jakarta.servlet.*;
+// import jakarta.servlet.*;
 import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
+// import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.*;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -28,14 +28,21 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                
                 .requestMatchers(
+                    "/",
+                    "/index.html",
+                    "/favicon.ico",
                     "/auth/**",
+                    "/api-docs",
+                    "/api-docs/**",
+                    "/v3/api-docs",
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
-                    "/swagger-ui.html"
+                    "/swagger-ui.html",
+                    "/webjars/**",
+                    "/swagger-resources/**",
+                    "/error"
                 ).permitAll()
-                
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

@@ -3,30 +3,29 @@ package io.github.kiriinteo.visuvarejo.application.catalog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 import io.github.kiriinteo.visuvarejo.core.domain.Product;
 import io.github.kiriinteo.visuvarejo.core.port.ProductRepository;
-import io.github.kiriinteo.visuvarejo.core.exception.DomainException;
-import io.github.kiriinteo.visuvarejo.adapter.web.catalog.dto.ProductResponse;
+import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class GetProductByIdUseCase {
 
     private final ProductRepository productRepository;
+    private final CurrentUserProvider currentUserProvider;
 
-    public ProductResponse execute(UUID id) {
+    public Product execute(UUID id) {
+        UUID companyId = currentUserProvider.getCompanyId();
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new DomainException("Produto não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-        return new ProductResponse(
-                product.getId(),
-                product.getName(),
-                product.getPrice().getValue(),
-                product.getCategoryId(),
-                product.isActive()
-        );
+        if (!product.getCompanyId().equals(companyId)) {
+            throw new RuntimeException("Produto não encontrado");
+        }
+
+        return product;
     }
 }

@@ -8,8 +8,9 @@ public class SaleItem {
     private final int quantity;
     private Money unitPrice;
     private String name;
+    private UUID companyId;
 
-    public SaleItem(UUID productId, int quantity, Money unitPrice, String name) {
+    public SaleItem(UUID productId, int quantity, Money unitPrice, String name, UUID companyId) {
         if (productId == null) {
             throw new IllegalArgumentException("Produto ID não pode ser nulo");
         }
@@ -26,6 +27,7 @@ public class SaleItem {
         this.quantity = quantity;
         this.unitPrice = unitPrice;
         this.name = name;
+        this.companyId = companyId;
     }
 
     public Money getTotal() {
@@ -50,5 +52,9 @@ public class SaleItem {
 
     public Money getSubtotal() {
         return unitPrice.multiply(quantity);
+    }
+
+    public UUID getCompanyId() {
+        return companyId;
     }
 }

@@ -45,7 +45,6 @@ public class SaleRepositoryImpl implements SaleRepository {
 
     @Override
     public List<Sale> findByPeriod(Period period) {
-
         LocalDateTime start = period.getStart().atStartOfDay();
         LocalDateTime end = period.getEnd().atTime(23, 59, 59);
 
@@ -54,4 +53,30 @@ public class SaleRepositoryImpl implements SaleRepository {
                 .map(SaleMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Sale> findByCompanyId(UUID companyId) { 
+        return jpaRepository.findByCompanyId(companyId)
+                .stream()
+                .map(SaleMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Sale> findByCompanyIdAndDateBetween(UUID companyId, LocalDateTime start, LocalDateTime end) {
+        return jpaRepository.findByCompanyIdAndDateBetween(companyId, start, end)
+                .stream()
+                .map(SaleMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Sale> findAllByCompanyId(UUID companyId) {
+        return jpaRepository.findAll()
+                .stream()
+                .filter(saleEntity -> companyId.equals(saleEntity.getCompanyId()))
+                .map(SaleMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+    
 }

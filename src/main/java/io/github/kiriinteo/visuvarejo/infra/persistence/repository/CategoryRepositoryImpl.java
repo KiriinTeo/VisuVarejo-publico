@@ -50,4 +50,27 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     public boolean existsById(UUID categoryId) {
         return jpaRepository.existsById(categoryId);
     }
+
+    @Override
+    public List<Category> findByCompanyId(UUID companyId) {
+        return jpaRepository.findByCompanyId(companyId)
+                .stream()
+                .map(CategoryMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+    
+    @Override
+    public List<Category> findAllByCompanyId(UUID companyId) {
+        return jpaRepository.findAllByCompanyId(companyId)
+                .stream()
+                .map(CategoryMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+    
+    @Override
+    public Optional<Category> findByIdAndCompanyId(UUID id, UUID companyId) {       
+        return jpaRepository.findById(id)
+                .filter(categoryEntity -> categoryEntity.getCompanyId().equals(companyId))
+                .map(CategoryMapper::toDomain);
+    }
 }

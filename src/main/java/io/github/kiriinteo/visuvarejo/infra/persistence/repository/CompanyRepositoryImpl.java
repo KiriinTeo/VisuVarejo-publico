@@ -35,4 +35,5 @@ public class CompanyRepositoryImpl implements CompanyRepository {
         return jpaRepository.findByDocument(document)
                 .map(CompanyMapper::toDomain);
     }
+    
 }

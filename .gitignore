@@ -3,6 +3,7 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+*.war
 
 ### STS ###
 .apt_generated
@@ -31,3 +32,14 @@ build/
 
 ### VS Code ###
 .vscode/
+README.md
+.env
+
+# Docker volumes locais
+postgres_data/
+
+# Spring Boot
+*.log
+logs/
+
+**/src/main/resources/application.properties
