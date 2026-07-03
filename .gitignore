@@ -41,4 +41,5 @@ postgres_data/
 # Spring Boot
 *.log
 logs/
-application.properties
+
+**/src/main/resources/application.properties
