@@ -3,6 +3,7 @@ package io.github.kiriinteo.visuvarejo.application.analytics;
 import io.github.kiriinteo.visuvarejo.core.domain.Sale;
 import io.github.kiriinteo.visuvarejo.core.domain.Period;
 import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
+import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,9 +15,11 @@ import java.util.List;
 public class GetAverageTicketUseCase {
 
     private final SaleRepository saleRepository;
+    private final CurrentUserProvider currentUserProvider;
 
-    public GetAverageTicketUseCase(SaleRepository saleRepository) {
+    public GetAverageTicketUseCase(SaleRepository saleRepository, CurrentUserProvider currentUserProvider) {
         this.saleRepository = saleRepository;
+        this.currentUserProvider = currentUserProvider;
     }
 
     public BigDecimal execute(LocalDateTime start, LocalDateTime end) {
@@ -30,7 +33,7 @@ public class GetAverageTicketUseCase {
         }
         
         Period period = new Period(start.toLocalDate(), end.toLocalDate());
-        List<Sale> sales = saleRepository.findByPeriod(period);
+        List<Sale> sales = saleRepository.findByPeriodAndCompany(period, currentUserProvider.getCompanyId());
 
         if (sales.isEmpty()) {
             return BigDecimal.ZERO;

@@ -4,6 +4,7 @@ import io.github.kiriinteo.visuvarejo.core.analytics.TrendAnalyzer;
 import io.github.kiriinteo.visuvarejo.core.domain.Period;
 import io.github.kiriinteo.visuvarejo.core.domain.Sale;
 import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
+import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,10 +15,12 @@ public class GetTrendAnalysisUseCase {
 
     private final SaleRepository saleRepository;
     private final TrendAnalyzer trendAnalyzer;
+    private final CurrentUserProvider currentUserProvider;
 
-    public GetTrendAnalysisUseCase(SaleRepository saleRepository) {
+    public GetTrendAnalysisUseCase(SaleRepository saleRepository, CurrentUserProvider currentUserProvider) {
         this.saleRepository = saleRepository;
         this.trendAnalyzer = new TrendAnalyzer();
+        this.currentUserProvider = currentUserProvider;
     }
 
     public double execute(LocalDate previousStart,
@@ -36,7 +39,7 @@ public class GetTrendAnalysisUseCase {
 
     private double calculateTotalRevenue(Period period) {
 
-        List<Sale> sales = saleRepository.findByPeriod(period);
+        List<Sale> sales = saleRepository.findByPeriodAndCompany(period, currentUserProvider.getCompanyId());
 
         return sales.stream()
                 .map(sale -> sale.calculateTotal().getValue().doubleValue())

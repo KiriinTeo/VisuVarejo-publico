@@ -21,7 +21,7 @@ public class RegisterSaleUseCase {
 
     public Sale execute(List<SaleItemRequest> itemsRequest) {
 
-        Sale sale = new Sale(UUID.randomUUID(), UUID.randomUUID());
+        Sale sale = new Sale(UUID.randomUUID(), currentUserProvider.getCompanyId());
 
         for (SaleItemRequest itemRequest : itemsRequest) {
 

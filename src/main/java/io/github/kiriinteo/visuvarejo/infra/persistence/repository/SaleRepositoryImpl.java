@@ -78,5 +78,16 @@ public class SaleRepositoryImpl implements SaleRepository {
                 .map(SaleMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Sale> findByPeriodAndCompany(Period period, UUID companyId) {
+        LocalDateTime start = period.getStart().atStartOfDay();
+        LocalDateTime end = period.getEnd().atTime(23, 59, 59);
+
+        return jpaRepository.findByCompanyIdAndDateBetween(companyId, start, end)
+                .stream()
+                .map(SaleMapper::toDomain)
+                .collect(Collectors.toList());
+    }
     
 }

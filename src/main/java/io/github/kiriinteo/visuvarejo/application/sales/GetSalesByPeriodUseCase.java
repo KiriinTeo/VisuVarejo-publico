@@ -3,7 +3,7 @@ package io.github.kiriinteo.visuvarejo.application.sales;
 import io.github.kiriinteo.visuvarejo.core.domain.Period;
 import io.github.kiriinteo.visuvarejo.core.domain.Sale;
 import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
-//import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
+import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.List;
 public class GetSalesByPeriodUseCase {
 
     private final SaleRepository saleRepository;
-    //private final CurrentUserProvider currentUserProvider;
+    private final CurrentUserProvider currentUserProvider;
 
     public List<Sale> execute(LocalDateTime start, LocalDateTime end) {
 
@@ -29,6 +29,6 @@ public class GetSalesByPeriodUseCase {
         }
 
         Period period = new Period(start.toLocalDate(), end.toLocalDate());
-        return saleRepository.findByPeriod(period);
+        return saleRepository.findByPeriodAndCompany(period, currentUserProvider.getCompanyId());
     }
 }

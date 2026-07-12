@@ -23,4 +23,6 @@ public interface SaleRepository {
     List<Sale> findByCompanyIdAndDateBetween(UUID companyId, LocalDateTime start, LocalDateTime end);
 
     List<Sale> findAllByCompanyId(UUID companyId);
+    
+    List<Sale> findByPeriodAndCompany(Period period, UUID companyId);
 }

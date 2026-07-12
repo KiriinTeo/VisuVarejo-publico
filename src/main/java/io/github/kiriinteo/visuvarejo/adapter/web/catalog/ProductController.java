@@ -7,6 +7,7 @@ import io.github.kiriinteo.visuvarejo.application.catalog.CreateProductUseCase;
 import io.github.kiriinteo.visuvarejo.application.catalog.GetAllProductsUseCase;
 import io.github.kiriinteo.visuvarejo.application.catalog.GetProductByIdUseCase;
 import io.github.kiriinteo.visuvarejo.application.catalog.UpdateProductUseCase;
+import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
 import io.github.kiriinteo.visuvarejo.core.port.ProductRepository;
 
 
@@ -27,13 +28,20 @@ public class ProductController {
     private final GetProductByIdUseCase getProductByIdUseCase;
     private final UpdateProductUseCase updateProductUseCase;
     private final ProductRepository productRepository;
+    private final CurrentUserProvider currentUserProvider;
 
-    public ProductController(CreateProductUseCase createProductUseCase, GetAllProductsUseCase getAllProductsUseCase, GetProductByIdUseCase getProductByIdUseCase, UpdateProductUseCase updateProductUseCase, ProductRepository productRepository) {
+    public ProductController(CreateProductUseCase createProductUseCase, 
+                            GetAllProductsUseCase getAllProductsUseCase, 
+                            GetProductByIdUseCase getProductByIdUseCase, 
+                            UpdateProductUseCase updateProductUseCase, 
+                            ProductRepository productRepository, 
+                            CurrentUserProvider currentUserProvider) {
         this.createProductUseCase = createProductUseCase;
         this.getAllProductsUseCase = getAllProductsUseCase;
         this.getProductByIdUseCase = getProductByIdUseCase;
         this.updateProductUseCase = updateProductUseCase;
         this.productRepository = productRepository;
+        this.currentUserProvider = currentUserProvider;
     }
 
     @PostMapping
@@ -95,7 +103,7 @@ public class ProductController {
     @GetMapping("/by-category/{categoryId}")
     public List<ProductResponse> getByCategory(@PathVariable UUID categoryId) {
 
-        return productRepository.findByCategoryId(categoryId)
+        return productRepository.findByCategoryIdAndCompanyId(categoryId, currentUserProvider.getCompanyId())
                 .stream()
                 .map(ProductResponse::fromDomain)
                 .toList();

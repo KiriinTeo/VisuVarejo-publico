@@ -5,6 +5,7 @@ import io.github.kiriinteo.visuvarejo.core.domain.Money;
 import io.github.kiriinteo.visuvarejo.core.domain.Sale;
 import io.github.kiriinteo.visuvarejo.core.domain.Period;
 import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
+import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
 
 import org.springframework.stereotype.Service;
 
@@ -15,14 +16,16 @@ import java.util.List;
 public class GetSalesMetricsUseCase {
 
     private final SaleRepository saleRepository;
+    private final CurrentUserProvider currentUserProvider;
 
-    public GetSalesMetricsUseCase(SaleRepository saleRepository) {
+    public GetSalesMetricsUseCase(SaleRepository saleRepository, CurrentUserProvider currentUserProvider) {
         this.saleRepository = saleRepository;
+        this.currentUserProvider = currentUserProvider;
     }
 
     public SalesMetrics execute(Period period) {
 
-        List<Sale> sales = saleRepository.findByPeriod(period);
+        List<Sale> sales = saleRepository.findByPeriodAndCompany(period, currentUserProvider.getCompanyId());
 
         Money totalRevenue = new Money(BigDecimal.ZERO);
         int totalItems = 0;

@@ -11,6 +11,8 @@ import io.github.kiriinteo.visuvarejo.core.domain.Category;
 import io.github.kiriinteo.visuvarejo.core.port.CategoryRepository;
 import io.github.kiriinteo.visuvarejo.adapter.web.catalog.dto.CreateCategoryRequest;
 import io.github.kiriinteo.visuvarejo.adapter.web.catalog.dto.CategoryResponse;
+import io.github.kiriinteo.visuvarejo.application.catalog.GetAllCategoriesUseCase;
+import io.github.kiriinteo.visuvarejo.application.catalog.GetCategoryByIdUseCase;
 
 @RestController
 @RequestMapping("/categories")
@@ -18,7 +20,8 @@ import io.github.kiriinteo.visuvarejo.adapter.web.catalog.dto.CategoryResponse;
 public class CategoryController {
 
     private final CreateCategoryUseCase createCategoryUseCase;
-    private final CategoryRepository categoryRepository;
+    private final GetAllCategoriesUseCase getAllCategoriesUseCase;
+    private final GetCategoryByIdUseCase getCategoryByIdUseCase;
 
     @PostMapping
     public CategoryResponse create(@RequestBody CreateCategoryRequest request) {
@@ -27,20 +30,16 @@ public class CategoryController {
 
     @GetMapping
     public List<CategoryResponse> findAll() {
-        return categoryRepository.findAll().stream()
-                .map(category -> new CategoryResponse(
-                        category.getId(),
-                        category.getName(),
-                        category.getCompanyId()
-                ))
-                .toList();
+       return getAllCategoriesUseCase.execute().stream()
+            .map(c -> new CategoryResponse(c.getId(), c.getName(), c.getCompanyId()))
+            .toList();
+                
     }
 
     @GetMapping("/{id}")
     public CategoryResponse findById(@PathVariable UUID id) {
 
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+        Category category = getCategoryByIdUseCase.execute(id);
 
         return new CategoryResponse(
                 category.getId(),
