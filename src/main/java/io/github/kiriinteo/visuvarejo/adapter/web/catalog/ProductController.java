@@ -12,6 +12,8 @@ import io.github.kiriinteo.visuvarejo.core.port.ProductRepository;
 
 
 import io.github.kiriinteo.visuvarejo.core.domain.Product;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,7 +52,8 @@ public class ProductController {
         Product product = createProductUseCase.execute(
                 request.name(),
                 request.price(),
-                request.categoryId()
+                request.categoryId(),
+                currentUserProvider.getCompanyId()
         );
 
         return new ProductResponse(
@@ -64,23 +67,15 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductResponse> findAll() {
-        return getAllProductsUseCase.execute()
-                .stream()
-                .map(product -> new ProductResponse(
-                        product.getId(),
-                        product.getName(),
-                        product.getPrice().getValue(),
-                        product.getCategoryId(),
-                        product.isActive(),
-                        product.getCompanyId()
-                ))
-                .toList();
-    }
+    public ResponseEntity<List<Product>> getAllProducts() {
+        UUID companyId = currentUserProvider.getCompanyId();
+        List<Product> products = getAllProductsUseCase.execute(companyId);
+        return ResponseEntity.ok(products);
+}
 
     @GetMapping("/{id}")
     public ProductResponse findById(@PathVariable UUID id) {
-        Product product = getProductByIdUseCase.execute(id);
+        Product product = getProductByIdUseCase.execute(id, currentUserProvider.getCompanyId());
 
         return new ProductResponse(
                 product.getId(),
@@ -97,7 +92,7 @@ public class ProductController {
         @PathVariable UUID id,
         @RequestBody UpdateProductRequest request
     ) {
-        return updateProductUseCase.execute(id, request);
+        return updateProductUseCase.execute(id, request, currentUserProvider.getCompanyId());
     }
 
     @GetMapping("/by-category/{categoryId}")

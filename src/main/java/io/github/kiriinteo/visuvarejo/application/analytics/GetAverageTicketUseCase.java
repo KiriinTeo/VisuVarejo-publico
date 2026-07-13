@@ -3,26 +3,26 @@ package io.github.kiriinteo.visuvarejo.application.analytics;
 import io.github.kiriinteo.visuvarejo.core.domain.Sale;
 import io.github.kiriinteo.visuvarejo.core.domain.Period;
 import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
-import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GetAverageTicketUseCase {
 
     private final SaleRepository saleRepository;
-    private final CurrentUserProvider currentUserProvider;
 
-    public GetAverageTicketUseCase(SaleRepository saleRepository, CurrentUserProvider currentUserProvider) {
+    public GetAverageTicketUseCase(SaleRepository saleRepository) {
         this.saleRepository = saleRepository;
-        this.currentUserProvider = currentUserProvider;
     }
 
-    public BigDecimal execute(LocalDateTime start, LocalDateTime end) {
+    @Cacheable(value = "averageTicket", key = "#companyId + '::' + #period.start + '::' + #period.end")
+    public BigDecimal execute(UUID companyId, LocalDateTime start, LocalDateTime end) {
 
         if (start == null || end == null) {
             throw new IllegalArgumentException("Datas de início e fim são obrigatórias");
@@ -33,7 +33,7 @@ public class GetAverageTicketUseCase {
         }
         
         Period period = new Period(start.toLocalDate(), end.toLocalDate());
-        List<Sale> sales = saleRepository.findByPeriodAndCompany(period, currentUserProvider.getCompanyId());
+        List<Sale> sales = saleRepository.findByPeriodAndCompany(period, companyId);
 
         if (sales.isEmpty()) {
             return BigDecimal.ZERO;

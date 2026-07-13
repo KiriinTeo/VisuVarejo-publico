@@ -5,6 +5,8 @@ import io.github.kiriinteo.visuvarejo.core.domain.Period;
 import io.github.kiriinteo.visuvarejo.core.domain.Sale;
 import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
 import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
+
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,6 +25,7 @@ public class GetTrendAnalysisUseCase {
         this.currentUserProvider = currentUserProvider;
     }
 
+    @Cacheable(value = "trendAnalysis", key = "#previousStart + '::' + #previousEnd + '::' + #currentStart + '::' + #currentEnd")
     public double execute(LocalDate previousStart,
                           LocalDate previousEnd,
                           LocalDate currentStart,
@@ -37,6 +40,7 @@ public class GetTrendAnalysisUseCase {
         return trendAnalyzer.calculateGrowthRate(previousTotal, currentTotal);
     }
 
+    @Cacheable(value = "totalRevenue", key = "#period.start + '::' + #period.end")
     private double calculateTotalRevenue(Period period) {
 
         List<Sale> sales = saleRepository.findByPeriodAndCompany(period, currentUserProvider.getCompanyId());

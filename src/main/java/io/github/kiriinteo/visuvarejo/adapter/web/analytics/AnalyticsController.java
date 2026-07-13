@@ -17,6 +17,7 @@ import io.github.kiriinteo.visuvarejo.adapter.web.analytics.dto.TicketAverageRes
 import io.github.kiriinteo.visuvarejo.adapter.web.analytics.dto.DashboardResponse;
 import io.github.kiriinteo.visuvarejo.adapter.web.analytics.dto.GrowthScoreResponse;
 import io.github.kiriinteo.visuvarejo.adapter.web.analytics.dto.OverviewResponse;
+import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,12 +41,14 @@ public class AnalyticsController {
     private final AlertGenerationUseCase alertGenerationUseCase;
     private final GetStoreHealthScoreUseCase storeHealthScoreUseCase;
     private final GetRevenueConcentrationUseCase revenueConcentrationUseCase;
+    private final CurrentUserProvider currentUserProvider;
 
         public AnalyticsController(GetRevenueByPeriodUseCase getRevenueByPeriodUseCase, GetAverageTicketUseCase getAverageTicketUseCase, 
                 GetProductRiskAnalysisUseCase getProductRiskAnalysisUseCase, GetGrowthScoreUseCase getGrowthScoreUseCase, 
                 GetSalesMetricsUseCase getSalesMetricsUseCase, GetTrendAnalysisUseCase getTrendAnalysisUseCase, 
                 AlertGenerationUseCase alertGenerationUseCase, GetStoreHealthScoreUseCase storeHealthScoreUseCase, 
-                GetRevenueConcentrationUseCase revenueConcentrationUseCase) {
+                GetRevenueConcentrationUseCase revenueConcentrationUseCase,
+                CurrentUserProvider currentUserProvider) { 
 
         this.getRevenueByPeriodUseCase = getRevenueByPeriodUseCase;
         this.getAverageTicketUseCase = getAverageTicketUseCase;
@@ -56,6 +59,7 @@ public class AnalyticsController {
         this.alertGenerationUseCase = alertGenerationUseCase;
         this.storeHealthScoreUseCase = storeHealthScoreUseCase;
         this.revenueConcentrationUseCase = revenueConcentrationUseCase;
+        this.currentUserProvider = currentUserProvider;
     }
 
         @GetMapping("/revenue")
@@ -63,7 +67,7 @@ public class AnalyticsController {
                 @RequestParam LocalDateTime start,
                 @RequestParam LocalDateTime end
         ) {
-                BigDecimal totalRevenue = getRevenueByPeriodUseCase.execute(start, end);
+                BigDecimal totalRevenue = getRevenueByPeriodUseCase.execute(currentUserProvider.getCompanyId(), start, end);
                 return new RevenueResponse(start, end, totalRevenue);
         }
         
@@ -72,7 +76,7 @@ public class AnalyticsController {
                 @RequestParam LocalDateTime start,
                 @RequestParam LocalDateTime end
         ) {
-                BigDecimal averageTicket = getAverageTicketUseCase.execute(start, end);
+                BigDecimal averageTicket = getAverageTicketUseCase.execute(currentUserProvider.getCompanyId(), start, end);
                 return new TicketAverageResponse(start, end, averageTicket);
         }
 
@@ -84,7 +88,7 @@ public class AnalyticsController {
 
                 Period period = new Period(start.toLocalDate(), end.toLocalDate());
 
-                return getProductRiskAnalysisUseCase.execute(period)
+                return getProductRiskAnalysisUseCase.execute(currentUserProvider.getCompanyId(), period)
                         .stream()
                         .map(r -> new ProductRiskResponse(
                                 r.getProductId().toString(),
@@ -104,7 +108,7 @@ public class AnalyticsController {
 
                 Period period = new Period(start.toLocalDate(), end.toLocalDate());
 
-                return getGrowthScoreUseCase.execute(period)
+                return getGrowthScoreUseCase.execute(currentUserProvider.getCompanyId(), period)
                         .stream()
                         .map(r -> new GrowthScoreResponse(
                                 r.getProductId(),
@@ -124,7 +128,7 @@ public class AnalyticsController {
 
         Period period = new Period(start.toLocalDate(), end.toLocalDate());
 
-        var metrics = getSalesMetricsUseCase.execute(period);
+        var metrics = getSalesMetricsUseCase.execute( period, currentUserProvider.getCompanyId());
 
         return new OverviewResponse(
                 start,
@@ -189,7 +193,7 @@ public class AnalyticsController {
         );
 
         double concentration =
-                revenueConcentrationUseCase.execute(currentPeriod);
+                revenueConcentrationUseCase.execute(currentPeriod, currentUserProvider.getCompanyId());
 
         int healthScore =
                 storeHealthScoreUseCase.execute(

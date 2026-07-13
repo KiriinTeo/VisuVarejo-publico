@@ -5,7 +5,8 @@ import io.github.kiriinteo.visuvarejo.core.analytics.ProductRiskResult;
 import io.github.kiriinteo.visuvarejo.core.domain.Period;
 import io.github.kiriinteo.visuvarejo.core.domain.Sale;
 import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
-import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
+
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -16,19 +17,18 @@ public class GetProductRiskAnalysisUseCase {
 
     private final SaleRepository saleRepository;
     private final ProductRiskAnalyzer analyzer;
-    private final CurrentUserProvider currentUserProvider;
 
     public GetProductRiskAnalysisUseCase(SaleRepository saleRepository,
-                                         ProductRiskAnalyzer analyzer,
-                                         CurrentUserProvider currentUserProvider) {
+                                         ProductRiskAnalyzer analyzer
+                                          ) {
         this.saleRepository = saleRepository;
         this.analyzer = analyzer;
-        this.currentUserProvider = currentUserProvider;
     }
 
-    public List<ProductRiskResult> execute(Period period) {
+    @Cacheable(value = "productRiskAnalysis", key = "#companyId + '::' + #period.start + '::' + #period.end")
+    public List<ProductRiskResult> execute(UUID companyId, Period period) {
 
-        List<Sale> sales = saleRepository.findByPeriodAndCompany(period, currentUserProvider.getCompanyId());
+        List<Sale> sales = saleRepository.findByPeriodAndCompany(period, companyId);
 
         Map<UUID, List<Double>> productDailyTotals = new HashMap<>();
 

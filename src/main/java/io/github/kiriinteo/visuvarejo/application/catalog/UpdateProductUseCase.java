@@ -2,6 +2,7 @@ package io.github.kiriinteo.visuvarejo.application.catalog;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.cache.annotation.CacheEvict;
 
 import java.util.UUID;
 
@@ -11,18 +12,15 @@ import io.github.kiriinteo.visuvarejo.core.port.ProductRepository;
 import io.github.kiriinteo.visuvarejo.core.exception.DomainException;
 import io.github.kiriinteo.visuvarejo.adapter.web.catalog.dto.ProductResponse;
 import io.github.kiriinteo.visuvarejo.adapter.web.catalog.dto.UpdateProductRequest;
-import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
 
 @Service
 @RequiredArgsConstructor
 public class UpdateProductUseCase {
 
     private final ProductRepository productRepository;
-    private final CurrentUserProvider currentUserProvider;
 
-    public ProductResponse execute(UUID id, UpdateProductRequest request) {
-
-        UUID companyId = currentUserProvider.getCompanyId();
+    @CacheEvict(value = "products", key = "#companyId")
+    public ProductResponse execute(UUID id, UpdateProductRequest request, UUID companyId) {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new DomainException("Produto não encontrado"));

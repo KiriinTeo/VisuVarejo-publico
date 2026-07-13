@@ -5,27 +5,27 @@ import io.github.kiriinteo.visuvarejo.core.domain.Money;
 import io.github.kiriinteo.visuvarejo.core.domain.Sale;
 import io.github.kiriinteo.visuvarejo.core.domain.Period;
 import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
-import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
 
 import org.springframework.stereotype.Service;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GetSalesMetricsUseCase {
 
     private final SaleRepository saleRepository;
-    private final CurrentUserProvider currentUserProvider;
 
-    public GetSalesMetricsUseCase(SaleRepository saleRepository, CurrentUserProvider currentUserProvider) {
+    public GetSalesMetricsUseCase(SaleRepository saleRepository) {
         this.saleRepository = saleRepository;
-        this.currentUserProvider = currentUserProvider;
     }
 
-    public SalesMetrics execute(Period period) {
+    @Cacheable(value = "salesMetrics", key = "#companyId + '::' + #period.start + '::' + #period.end")
+    public SalesMetrics execute(Period period, UUID companyId) {
 
-        List<Sale> sales = saleRepository.findByPeriodAndCompany(period, currentUserProvider.getCompanyId());
+        List<Sale> sales = saleRepository.findByPeriodAndCompany(period, companyId);
 
         Money totalRevenue = new Money(BigDecimal.ZERO);
         int totalItems = 0;

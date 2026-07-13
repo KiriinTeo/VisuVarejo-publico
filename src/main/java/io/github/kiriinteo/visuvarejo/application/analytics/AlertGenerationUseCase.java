@@ -4,6 +4,7 @@ import io.github.kiriinteo.visuvarejo.core.alerts.Alert;
 import io.github.kiriinteo.visuvarejo.core.alerts.AlertType;
 import io.github.kiriinteo.visuvarejo.core.analytics.ProductRiskResult;
 import io.github.kiriinteo.visuvarejo.core.domain.Period;
+import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,13 +16,16 @@ public class AlertGenerationUseCase {
 
     private final GetProductRiskAnalysisUseCase riskUseCase;
     private final GetTrendAnalysisUseCase trendUseCase;
+    private final CurrentUserProvider currentUserProvider;
 
     public AlertGenerationUseCase(
             GetProductRiskAnalysisUseCase riskUseCase,
-            GetTrendAnalysisUseCase trendUseCase
+            GetTrendAnalysisUseCase trendUseCase,
+            CurrentUserProvider currentUserProvider
     ) {
         this.riskUseCase = riskUseCase;
         this.trendUseCase = trendUseCase;
+        this.currentUserProvider = currentUserProvider;
     }
 
     public List<Alert> execute(
@@ -36,7 +40,7 @@ public class AlertGenerationUseCase {
         Period currentPeriod = new Period(currentStart, currentEnd);
 
         List<ProductRiskResult> risks =
-                riskUseCase.execute(currentPeriod);
+                riskUseCase.execute(currentUserProvider.getCompanyId(), currentPeriod);
 
         for (ProductRiskResult risk : risks) {
 

@@ -2,10 +2,10 @@ package io.github.kiriinteo.visuvarejo.application.catalog;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.cache.annotation.Cacheable;
 
 import io.github.kiriinteo.visuvarejo.core.domain.Product;
 import io.github.kiriinteo.visuvarejo.core.port.ProductRepository;
-import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
 
 import java.util.UUID;
 
@@ -14,11 +14,9 @@ import java.util.UUID;
 public class GetProductByIdUseCase {
 
     private final ProductRepository productRepository;
-    private final CurrentUserProvider currentUserProvider;
 
-    public Product execute(UUID id) {
-        UUID companyId = currentUserProvider.getCompanyId();
-
+    @Cacheable(value = "product", key = "#id")
+    public Product execute(UUID id, UUID companyId) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 

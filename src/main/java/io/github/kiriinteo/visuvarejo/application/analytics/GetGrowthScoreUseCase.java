@@ -4,7 +4,8 @@ import io.github.kiriinteo.visuvarejo.core.analytics.*;
 import io.github.kiriinteo.visuvarejo.core.domain.Period;
 import io.github.kiriinteo.visuvarejo.core.domain.Sale;
 import io.github.kiriinteo.visuvarejo.core.port.SaleRepository;
-import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
+
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -16,21 +17,20 @@ public class GetGrowthScoreUseCase {
     private final SaleRepository saleRepository;
     private final ProductRiskAnalyzer riskAnalyzer;
     private final GrowthScoreEngine scoreEngine;
-    private final CurrentUserProvider currentUserProvider;
 
     public GetGrowthScoreUseCase(SaleRepository saleRepository,
                                  ProductRiskAnalyzer riskAnalyzer,
-                                 GrowthScoreEngine scoreEngine,
-                                 CurrentUserProvider currentUserProvider) {
+                                 GrowthScoreEngine scoreEngine
+                                  ) {
         this.saleRepository = saleRepository;
         this.riskAnalyzer = riskAnalyzer;
         this.scoreEngine = scoreEngine;
-        this.currentUserProvider = currentUserProvider;
     }
 
-    public List<GrowthScoreResult> execute(Period period) {
+    @Cacheable(value = "growthScores", key = "#companyId + '::' + #period.start + '::' + #period.end")
+    public List<GrowthScoreResult> execute(UUID companyId, Period period) {
 
-        List<Sale> sales = saleRepository.findByPeriodAndCompany(period, currentUserProvider.getCompanyId());
+        List<Sale> sales = saleRepository.findByPeriodAndCompany(period, companyId);
 
         Map<String, List<Double>> productTotals = new HashMap<>();
 

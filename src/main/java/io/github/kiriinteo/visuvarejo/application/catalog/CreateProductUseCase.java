@@ -5,6 +5,8 @@ import io.github.kiriinteo.visuvarejo.core.domain.Product;
 import io.github.kiriinteo.visuvarejo.core.port.ProductRepository;
 import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
 import io.github.kiriinteo.visuvarejo.core.port.CategoryRepository;
+
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,7 +25,8 @@ public class CreateProductUseCase {
         this.currentUserProvider = currentUserProvider;
     }
 
-    public Product execute(String name, BigDecimal price, UUID categoryId) {
+    @CacheEvict(value = "products", key = "#companyId")
+    public Product execute(String name, BigDecimal price, UUID categoryId, UUID companyId) {
 
         if (!categoryRepository.existsById(categoryId)) {
             throw new IllegalArgumentException("Categoria com ID " + categoryId + " não existe");
