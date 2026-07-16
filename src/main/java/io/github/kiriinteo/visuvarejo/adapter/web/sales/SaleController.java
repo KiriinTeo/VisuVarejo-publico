@@ -1,5 +1,6 @@
 package io.github.kiriinteo.visuvarejo.adapter.web.sales;
 
+import io.github.kiriinteo.visuvarejo.infra.security.CurrentUserProvider;
 import io.github.kiriinteo.visuvarejo.application.sales.GetSalesByPeriodUseCase;
 import io.github.kiriinteo.visuvarejo.application.sales.RegisterSaleUseCase;
 import io.github.kiriinteo.visuvarejo.adapter.web.sales.dto.CreateSaleRequest;
@@ -17,10 +18,14 @@ public class SaleController {
 
     private final RegisterSaleUseCase registerSaleUseCase;
     private final GetSalesByPeriodUseCase getSalesByPeriodUseCase;
+    private final CurrentUserProvider currentUserProvider;
 
-    public SaleController(RegisterSaleUseCase registerSaleUseCase, GetSalesByPeriodUseCase getSalesByPeriodUseCase) {
+    public SaleController(RegisterSaleUseCase registerSaleUseCase, 
+                        GetSalesByPeriodUseCase getSalesByPeriodUseCase, 
+                        CurrentUserProvider currentUserProvider) {
         this.registerSaleUseCase = registerSaleUseCase;
         this.getSalesByPeriodUseCase = getSalesByPeriodUseCase;
+        this.currentUserProvider = currentUserProvider;
     }
 
     @PostMapping
@@ -33,6 +38,7 @@ public class SaleController {
                                 i.quantity()
                         ))
                         .collect(Collectors.toList())
+                ,currentUserProvider.getCompanyId()
         );
 
         return mapToResponse(sale);
@@ -61,7 +67,7 @@ public class SaleController {
             @RequestParam LocalDateTime end
     ) {
 
-        return getSalesByPeriodUseCase.execute(start, end)
+        return getSalesByPeriodUseCase.execute(start, end, currentUserProvider.getCompanyId())
                 .stream()
                 .map(this::mapToResponse)
                 .toList();

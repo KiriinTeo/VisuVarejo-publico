@@ -1,8 +1,9 @@
 package io.github.kiriinteo.visuvarejo.core.domain;
 
 import java.util.UUID;
+import java.io.Serializable;
 
-public class SaleItem {
+public class SaleItem implements Serializable {
 
     private final UUID productId;
     private final int quantity;

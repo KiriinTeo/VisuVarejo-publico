@@ -6,6 +6,8 @@ import io.github.kiriinteo.visuvarejo.core.domain.User;
 import io.github.kiriinteo.visuvarejo.core.exception.DomainException;
 import io.github.kiriinteo.visuvarejo.core.port.CompanyRepository;
 import io.github.kiriinteo.visuvarejo.core.port.UserRepository;
+
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ public class RegisterUserUseCase {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public RegisterResult execute(RegisterCommand command) {
 
         userRepository.findByEmail(command.email())

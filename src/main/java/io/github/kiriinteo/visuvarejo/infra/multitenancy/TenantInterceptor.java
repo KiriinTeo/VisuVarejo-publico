@@ -6,20 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-/**
- * Interceptor que resolve o tenant_id a partir do JWT de cada request.
- *
- * Fluxo:
- *   1. Spring Security valida o JWT e popula o SecurityContext.
- *   2. Este interceptor lê o claim "tenantId" do token e chama TenantContext.set().
- *   3. Os repositórios usam TenantContext.getTenantId() para filtrar dados.
- *   4. afterCompletion() limpa o ThreadLocal — obrigatório para evitar leak.
- *
- * Por que interceptor e não filtro?
- * O interceptor roda após o filtro de segurança do Spring Security,
- * então o JWT já foi validado quando chegamos aqui. Mais seguro.
- */
-
 @Component
 @RequiredArgsConstructor
 public class TenantInterceptor implements HandlerInterceptor {

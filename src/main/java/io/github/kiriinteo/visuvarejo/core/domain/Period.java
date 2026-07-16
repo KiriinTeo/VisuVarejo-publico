@@ -1,8 +1,9 @@
 package io.github.kiriinteo.visuvarejo.core.domain;
 
 import java.time.LocalDate;
+import java.io.Serializable;
 
-public class Period {
+public class Period implements Serializable {
 
     private final LocalDate start;
     private final LocalDate end;

@@ -1,8 +1,9 @@
 package io.github.kiriinteo.visuvarejo.core.domain;
 
 import java.util.UUID;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable {
 
     private UUID id;
     private String name;

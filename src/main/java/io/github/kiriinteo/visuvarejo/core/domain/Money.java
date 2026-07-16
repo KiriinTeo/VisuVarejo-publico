@@ -2,8 +2,9 @@ package io.github.kiriinteo.visuvarejo.core.domain;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.io.Serializable;
 
-public class Money {
+public class Money implements Serializable {
 
     private final BigDecimal value;
 

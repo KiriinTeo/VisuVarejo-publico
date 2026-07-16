@@ -1,11 +1,12 @@
 package io.github.kiriinteo.visuvarejo.core.domain;
 
 import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Sale {
+public class Sale implements Serializable {
 
     private final UUID id;
     private final LocalDateTime date;
