@@ -41,8 +41,10 @@ public class SecurityConfig {
                     "/swagger-ui.html",
                     "/webjars/**",
                     "/swagger-resources/**",
-                    "/error"
+                    "/error",
+                    "/actuator/health"
                 ).permitAll()
+                .requestMatchers("/actuator/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
